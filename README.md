@@ -11,7 +11,7 @@
 您可以到 [游云官方网站](http://www.17youyun.com) 下载游云 SDK。下载包中分为如下两部分：
 
 - PUSH Lib - 游云 PUSH库和相关库
-- PUSH Dome Dome地址：https://github.com/YBill/YouyunPushDome.git
+- PUSH Dome 
 
  Dome简单集成了PUSH功能，供您参考,您可以在开发者平台进行测试。
  
@@ -29,41 +29,27 @@
 commons-fileupload-1.2.1.jar
 commons-httpclient-3.1.jar
 commons-lang-2.6.jar
-protobuf-java-2.4.1.jar
-weimi-sdk-android-1.0.0.jar
-push-sdk-android-1.0.0.jar
+youyun-protobuf-java-2.4.1.jar
+youyun-push-android-1.0.1.jar
+youyun-wchat-android-1.0.1.jar
 ```
 ### 2、在您项目的AndroidManifest.xml文件中加入以下权限
 
 ```
-<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 <uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-<uses-permission android:name="android.permission.GET_TASKS" />
-<uses-permission android:name="android.permission.VIBRATE" />
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-<uses-permission android:name="android.permission.RECORD_AUDIO" />
-<uses-permission android:name="android.permission.WAKE_LOCK" />
-<uses-permission android:name="android.permission.BLUETOOTH" />
-<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 ```
 ### 3、在您项目的AndroidManifest.xml文件中加入以下服务
 
 ```
-<service android:name="matrix.sdk.countly.OpenUDID_service">
-     <intent-filter>
-          <action android:name="org.OpenUDID.GETUDID" />
-     </intent-filter>
-</service>
 <service 
-         android:name="com.weimi.push.service.WeimiPushService"
-         android:exported="true"
-         android:process=":push">
-            <intent-filter>
-                <action android:name="me.weimi.PushService.BIND" />
-            </intent-filter>
+    android:name="com.weimi.push.service.WeimiPushService"
+    android:exported="true"
+    android:process=":push">
+        <intent-filter>
+            <action android:name="me.weimi.PushService.BIND" />
+        </intent-filter>
 </service>
 ```
 ### 4、新建class PushMsgReceiver继承WeimiPushReceiver ,在此接收PUSH消息
