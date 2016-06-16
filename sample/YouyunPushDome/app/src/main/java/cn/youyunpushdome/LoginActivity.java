@@ -8,12 +8,15 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+
+
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
-import matrix.sdk.WeimiInstance;
-import matrix.sdk.data.AuthResultData;
-import matrix.sdk.message.WChatException;
+import com.ioyouyun.wchat.WeimiInstance;
+import com.ioyouyun.wchat.data.AuthResultData;
+import com.ioyouyun.wchat.message.WChatException;
+
 
 /**
  * Created by 卫彪 on 2016/5/11.

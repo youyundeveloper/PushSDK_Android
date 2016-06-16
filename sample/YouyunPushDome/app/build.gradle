@@ -5,6 +5,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
+        multiDexEnabled true
         applicationId "cn.youyunpushdome"
         minSdkVersion 15
         targetSdkVersion 23

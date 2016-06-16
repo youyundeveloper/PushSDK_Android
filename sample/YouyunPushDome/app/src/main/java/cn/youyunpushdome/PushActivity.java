@@ -20,9 +20,10 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import matrix.sdk.WeimiInstance;
-import matrix.sdk.message.HistoryMessage;
-import matrix.sdk.util.HttpCallback;
+import com.ioyouyun.wchat.WeimiInstance;
+import com.ioyouyun.wchat.message.HistoryMessage;
+import com.ioyouyun.wchat.util.HttpCallback;
+
 
 /**
  * Created by 卫彪 on 2016/5/11.
@@ -48,10 +49,10 @@ public class PushActivity extends AppCompatActivity {
         editEnd = (EditText) findViewById(R.id.edit_end);
         textGetInfo = (TextView) findViewById(R.id.text_get);
         textSetTime = (TextView) findViewById(R.id.text_set);
-        vibrateBtn = (ToggleButton)findViewById(R.id.btn_vibrate);
+        vibrateBtn = (ToggleButton) findViewById(R.id.btn_vibrate);
         vibrateBtn.setChecked(SharedPreferenceUtil.getInstance().getVibration());
         vibrateBtn.setOnCheckedChangeListener(onCheckedChangeListener);
-        soundBtn = (ToggleButton)findViewById(R.id.btn_sound);
+        soundBtn = (ToggleButton) findViewById(R.id.btn_sound);
         soundBtn.setChecked(SharedPreferenceUtil.getInstance().getSound());
         soundBtn.setOnCheckedChangeListener(onCheckedChangeListener);
         setTitle(uid);
@@ -61,9 +62,9 @@ public class PushActivity extends AppCompatActivity {
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if(buttonView == vibrateBtn){
+            if (buttonView == vibrateBtn) {
                 SharedPreferenceUtil.getInstance().setVibration(isChecked);
-            } else if(buttonView == soundBtn){
+            } else if (buttonView == soundBtn) {
                 SharedPreferenceUtil.getInstance().setSound(isChecked);
             }
         }
@@ -73,8 +74,8 @@ public class PushActivity extends AppCompatActivity {
         startPush();
     }
 
-    public void handleExit(View v){
-       System.exit(0);
+    public void handleExit(View v) {
+        System.exit(0);
     }
 
     public void handleGetPushInfo(View v) {
@@ -88,7 +89,7 @@ public class PushActivity extends AppCompatActivity {
 
     private void startPush() {
         boolean startpush = WeimiPush.connect(
-                PushActivity.this.getApplicationContext(), WeimiPush.pushServerIp, false);
+                PushActivity.this.getApplicationContext(), WeimiPush.pushServerIp, true);
         if (startpush) {
             Toast.makeText(PushActivity.this, getResources().getString(R.string.push_start_success), Toast.LENGTH_SHORT).show();
         } else {
