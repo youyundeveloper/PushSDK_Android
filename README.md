@@ -11,9 +11,9 @@
 您可以到 [游云官方网站](http://www.17youyun.com) 下载游云 SDK。下载包中分为如下两部分：
 
 - PUSH Lib - 游云 PUSH库和相关库
-- PUSH Dome 
+- PUSH Demo 
 
- Dome简单集成了PUSH功能，供您参考,您可以在开发者平台进行测试。
+ Demo简单集成了PUSH功能，供您参考,您可以在开发者平台进行测试。
  
 ### 3、创建应用
 
