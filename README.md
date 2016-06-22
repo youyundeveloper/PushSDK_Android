@@ -116,7 +116,13 @@ String getUID();
 @return true or false
 boolean logout();
 ```
-### 5、启动PUSH服务
+### 5、启动前台接收PUSH消息
+
+```
+@return true or false
+boolean frontReceiveMsg();
+```
+### 6、启动PUSH服务
 ```
 @param context
 @param pushServerHost WeimiPush.pushServerIp or WeimiPush.testPushServerIp
@@ -126,7 +132,7 @@ boolean isLogEnable)
 
 启动PUSH接口方法：WeimiPush.connect();
 ```
-### 6、注册PUSH信息
+### 7、注册PUSH信息
 ```
 @param startTime 勿扰时段开始时间
 @param endTime 勿扰时段结束时间
@@ -135,14 +141,14 @@ boolean isLogEnable)
 @return boolean
 boolean shortPushCreate(String startTime, String endTime, HttpCallback httpCallback, int timeout);
 ```
-### 7、查询PUSH注册信息
+### 8、查询PUSH注册信息
 ```
 @param httpCallback 回调 {"code":"200","msg":{"device_token":"android-168de9ab8f3a5baf","display":7,"start_time":0,"end_time":24,"data_type":63,"user_id":10001}}
 @param timeout 超时 单位秒
 @return boolean
 boolean shortPushShowUser(HttpCallback httpCallback, int timeout);
 ```
-### 8、注销PUSH信息
+### 9、注销PUSH信息
 ```
 @param httpCallback 回调 {"code":"200"}
 @param timeout 超时 单位秒
