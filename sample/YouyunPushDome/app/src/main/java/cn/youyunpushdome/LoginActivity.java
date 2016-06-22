@@ -50,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (authResultData.success) {
                         runOnUiThread(new Runnable() {
                             public void run() {
+                                WeimiInstance.getInstance().frontReceiveMsg();
                                 String uid = WeimiInstance.getInstance().getUID();
                                 if(TextUtils.isEmpty(uid)){
                                     Toast.makeText(LoginActivity.this, getResources().getString(R.string.nouid), Toast.LENGTH_SHORT).show();

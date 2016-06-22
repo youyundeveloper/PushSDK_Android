@@ -53,6 +53,12 @@
             </intent-filter>
         </service>
 
+        <service android:name="com.ioyouyun.wchat.countly.OpenUDID_service">
+            <intent-filter>
+                <action android:name="org.OpenUDID.GETUDID" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>
