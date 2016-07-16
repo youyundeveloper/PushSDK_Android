@@ -8,14 +8,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
-
+import com.ioyouyun.wchat.WeimiInstance;
+import com.ioyouyun.wchat.data.AuthResultData;
+import com.ioyouyun.wchat.message.WChatException;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
-import com.ioyouyun.wchat.WeimiInstance;
-import com.ioyouyun.wchat.data.AuthResultData;
-import com.ioyouyun.wchat.message.WChatException;
+import yun.mi.push.test.R;
 
 
 /**
@@ -42,8 +42,8 @@ public class LoginActivity extends AppCompatActivity {
             public void run() {
                 try {
                     String udid = generateOpenUDID();
-                    String clientIdDefault = "1-20082-3e1632fba5606ffd129dd9d08b8df64a-android";
-                    String clientSecretDefault = "c5bcda37516e2c8dbd41baa2df74821c";
+                    String clientIdDefault = "1-20091-46309b3229d9a4de30ff954c7a2c6b5b-android";
+                    String clientSecretDefault = "5ae8f6fe14d7101ae1af71c749025558";
                     AuthResultData authResultData = WeimiInstance.getInstance().registerApp(getApplicationContext(), udid,
                                     clientIdDefault, clientSecretDefault, 30);
 

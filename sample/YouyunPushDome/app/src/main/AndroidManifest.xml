@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cn.youyunpushdome">
+    package="yun.mi.push.test">
 
     <!-- youyun sdk permission -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -9,21 +9,27 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <permission
+      android:name="yun.mi.push.test.permission.MIPUSH_RECEIVE"
+      android:protectionLevel="signature" />
+
+    <uses-permission android:name="yun.mi.push.test.permission.MIPUSH_RECEIVE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".LoginActivity">
+        <activity android:name="cn.youyunpushdome.MainActivity"></activity>
+        <activity android:name="cn.youyunpushdome.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PushActivity"></activity>
+        <activity android:name="cn.youyunpushdome.PushActivity"></activity>
 
         <receiver
             android:name="cn.youyunpushdome.BootBroadcastReceiver"
@@ -36,10 +42,10 @@
         </receiver>
 
         <receiver
-            android:name=".PushMsgReceiver"
+            android:name="cn.youyunpushdome.PushMsgReceiver"
             android:exported="false">
             <intent-filter>
-                <action android:name="me.weimi.push.action.20082" />
+                <action android:name="me.weimi.push.action.20091" />
                 <!-- me.weimi.push.action.第三方的appId -->
             </intent-filter>
         </receiver>
@@ -58,6 +64,57 @@
                 <action android:name="org.OpenUDID.GETUDID" />
             </intent-filter>
         </service>
+
+        <service
+          android:name="com.xiaomi.push.service.XMJobService"
+          android:enabled="true"
+          android:exported="false"
+          android:permission="android.permission.BIND_JOB_SERVICE"
+          android:process=":pushservice" />
+
+        <service
+          android:name="com.xiaomi.push.service.XMPushService"
+          android:enabled="true"
+          android:process=":pushservice" />
+
+        <service
+          android:name="com.xiaomi.mipush.sdk.PushMessageHandler"
+          android:enabled="true"
+          android:exported="true" />
+        <service
+          android:name="com.xiaomi.mipush.sdk.MessageHandleService"
+          android:enabled="true" />
+
+        <receiver
+          android:name="cn.youyunpushdome.MiPushMsgReceiver"
+          android:exported="true">
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.ERROR" />
+            </intent-filter>
+        </receiver>
+        <receiver
+          android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
+          android:exported="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+        <receiver
+          android:name="com.xiaomi.push.service.receivers.PingReceiver"
+          android:exported="false"
+          android:process=":pushservice">
+            <intent-filter>
+                <action android:name="com.xiaomi.push.PING_TIMER" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

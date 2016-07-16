@@ -11,6 +11,8 @@ import android.widget.RemoteViews;
 import com.weimi.push.WeimiPushReceiver;
 import com.weimi.push.data.PayLoadMessage;
 
+import yun.mi.push.test.R;
+
 /**
  * Created by 卫彪 on 2016/5/11.
  */

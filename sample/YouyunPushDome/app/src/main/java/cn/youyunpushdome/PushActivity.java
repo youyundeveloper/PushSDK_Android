@@ -13,6 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.ioyouyun.wchat.WeimiInstance;
+import com.ioyouyun.wchat.message.HistoryMessage;
+import com.ioyouyun.wchat.util.HttpCallback;
 import com.weimi.push.WeimiPush;
 
 import org.json.JSONException;
@@ -20,9 +23,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import com.ioyouyun.wchat.WeimiInstance;
-import com.ioyouyun.wchat.message.HistoryMessage;
-import com.ioyouyun.wchat.util.HttpCallback;
+import yun.mi.push.test.R;
 
 
 /**
@@ -152,11 +153,6 @@ public class PushActivity extends AppCompatActivity {
                 handler.sendMessage(message);
             }
 
-            @Override
-            public void onResponse(byte[] arg0) {
-                // TODO Auto-generated method stub
-
-            }
         }, 60);
     }
 
@@ -207,11 +203,6 @@ public class PushActivity extends AppCompatActivity {
 
             }
 
-            @Override
-            public void onResponse(byte[] arg0) {
-                // TODO Auto-generated method stub
-
-            }
         }, 120);
     }
 
