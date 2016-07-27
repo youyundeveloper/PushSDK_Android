@@ -45,7 +45,7 @@
             android:name="cn.youyunpushdome.PushMsgReceiver"
             android:exported="false">
             <intent-filter>
-                <action android:name="me.weimi.push.action.20091" />
+                <action android:name="me.weimi.push.action.20271" />
                 <!-- me.weimi.push.action.第三方的appId -->
             </intent-filter>
         </receiver>
@@ -56,12 +56,6 @@
             android:process=":push">
             <intent-filter>
                 <action android:name="me.weimi.PushService.BIND" />
-            </intent-filter>
-        </service>
-
-        <service android:name="com.ioyouyun.wchat.countly.OpenUDID_service">
-            <intent-filter>
-                <action android:name="org.OpenUDID.GETUDID" />
             </intent-filter>
         </service>
 

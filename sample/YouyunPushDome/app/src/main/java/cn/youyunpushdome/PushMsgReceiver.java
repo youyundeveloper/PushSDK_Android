@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -24,6 +25,7 @@ public class PushMsgReceiver extends WeimiPushReceiver {
 	@Override
 	public void onMessage(Context context, PayLoadMessage payLoadMessage) {
 		String alert = payLoadMessage.alert;
+		Log.v("Bill", "alert:" + alert);
 		if (alert == null || alert.equals(""))
 			return;
 		Intent intent1 = new Intent();

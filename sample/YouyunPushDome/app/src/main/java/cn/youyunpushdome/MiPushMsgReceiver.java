@@ -42,7 +42,7 @@ import java.util.List;
  * 7、DemoMessageReceiver 的 onReceiveRegisterResult 方法用来接收客户端向服务器发送注册命令后的响应结果。<br/>
  * 8、以上这些方法运行在非 UI 线程中。
  *
- * @author mayixiang
+ * @author xueyan
  */
 public class MiPushMsgReceiver extends PushMessageReceiver {
 

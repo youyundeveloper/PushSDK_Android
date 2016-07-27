@@ -42,8 +42,8 @@ public class LoginActivity extends AppCompatActivity {
             public void run() {
                 try {
                     String udid = generateOpenUDID();
-                    String clientIdDefault = "1-20091-46309b3229d9a4de30ff954c7a2c6b5b-android";
-                    String clientSecretDefault = "5ae8f6fe14d7101ae1af71c749025558";
+                    String clientIdDefault = "1-20271-4fdc5c9315f5dcfb8645ba5c7c9d3194-andriod";
+                    String clientSecretDefault = "ce13b34d3e68be8f337829b8ed20d712";
                     AuthResultData authResultData = WeimiInstance.getInstance().registerApp(getApplicationContext(), udid,
                                     clientIdDefault, clientSecretDefault, 30);
 

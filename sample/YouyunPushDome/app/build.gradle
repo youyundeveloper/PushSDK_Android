@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         multiDexEnabled true
-        applicationId "cn.youyunpushdome"
+        applicationId "yun.mi.push.test"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
