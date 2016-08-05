@@ -47,9 +47,18 @@ public class LoginActivity extends AppCompatActivity {
                             clientIdDefault, clientSecretDefault, 60);
 
                     if (authResultData.success) {
-                        WeimiInstance.getInstance().frontReceiveMsg();// 前台接收消息
-                        WeimiInstance.getInstance().shortPushCreate(null, null, null, 60); // 注册push用户信息
-                        WeimiPush.connect(LoginActivity.this, WeimiPush.pushServerIp, true); // 启动PUSH
+                        /**
+                         * 前台接收PUSH消息
+                         */
+                        WeimiInstance.getInstance().frontReceiveMsg();
+                        /**
+                         * 注册push用户信息,startTime和endTime为null时默认以为设置的时间,以前没设置过则默认0~24
+                         */
+                        WeimiInstance.getInstance().shortPushCreate(null, null, null, 60);
+                        /**
+                         * 启动PUSH服务
+                         */
+                        WeimiPush.connect(LoginActivity.this, WeimiPush.pushServerIp, true);
 
                         Intent intent = new Intent(LoginActivity.this, PushActivity.class);
                         startActivity(intent);
