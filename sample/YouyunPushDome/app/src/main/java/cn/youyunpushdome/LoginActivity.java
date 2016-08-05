@@ -46,13 +46,16 @@ public class LoginActivity extends AppCompatActivity {
                     AuthResultData authResultData = WeimiInstance.getInstance().registerApp(getApplicationContext(), udid,
                             clientIdDefault, clientSecretDefault, 60);
 
+                    /**
+                     * 登录成功
+                     */
                     if (authResultData.success) {
                         /**
                          * 前台接收PUSH消息
                          */
                         WeimiInstance.getInstance().frontReceiveMsg();
                         /**
-                         * 注册push用户信息,startTime和endTime为null时默认以为设置的时间,以前没设置过则默认0~24
+                         * 注册push用户信息,startTime和endTime为null时默认为以前设置过的时间,以前没设置过则默认0~24
                          */
                         WeimiInstance.getInstance().shortPushCreate(null, null, null, 60);
                         /**
@@ -60,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                          */
                         WeimiPush.connect(LoginActivity.this, WeimiPush.pushServerIp, true);
 
+                        // TODO
                         Intent intent = new Intent(LoginActivity.this, PushActivity.class);
                         startActivity(intent);
                         finish();
