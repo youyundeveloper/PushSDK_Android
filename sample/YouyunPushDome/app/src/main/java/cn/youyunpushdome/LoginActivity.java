@@ -4,13 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
 
 import com.ioyouyun.wchat.WeimiInstance;
 import com.ioyouyun.wchat.data.AuthResultData;
 import com.ioyouyun.wchat.message.WChatException;
+import com.weimi.push.WeimiPush;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -45,23 +44,16 @@ public class LoginActivity extends AppCompatActivity {
                     String clientIdDefault = "1-20271-4fdc5c9315f5dcfb8645ba5c7c9d3194-andriod";
                     String clientSecretDefault = "ce13b34d3e68be8f337829b8ed20d712";
                     AuthResultData authResultData = WeimiInstance.getInstance().registerApp(getApplicationContext(), udid,
-                                    clientIdDefault, clientSecretDefault, 30);
+                            clientIdDefault, clientSecretDefault, 60);
 
                     if (authResultData.success) {
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                WeimiInstance.getInstance().frontReceiveMsg();
-                                String uid = WeimiInstance.getInstance().getUID();
-                                if(TextUtils.isEmpty(uid)){
-                                    Toast.makeText(LoginActivity.this, getResources().getString(R.string.nouid), Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
-                                Toast.makeText(LoginActivity.this, getResources().getString(R.string.login_success), Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, PushActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
-                        });
+                        WeimiInstance.getInstance().frontReceiveMsg();// 前台接收消息
+                        WeimiInstance.getInstance().shortPushCreate(null, null, null, 60); // 注册push用户信息
+                        WeimiPush.connect(LoginActivity.this, WeimiPush.pushServerIp, true); // 启动PUSH
+
+                        Intent intent = new Intent(LoginActivity.this, PushActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
 
                 } catch (WChatException e) {
@@ -73,8 +65,6 @@ public class LoginActivity extends AppCompatActivity {
         }).start();
 
     }
-
-
 
     /**
      * 根据设备生成一个唯一标识

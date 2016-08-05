@@ -16,7 +16,6 @@ import android.widget.ToggleButton;
 import com.ioyouyun.wchat.WeimiInstance;
 import com.ioyouyun.wchat.message.HistoryMessage;
 import com.ioyouyun.wchat.util.HttpCallback;
-import com.weimi.push.WeimiPush;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,10 +70,6 @@ public class PushActivity extends AppCompatActivity {
         }
     };
 
-    public void handleStartPush(View v) {
-        startPush();
-    }
-
     public void handleExit(View v) {
         System.exit(0);
     }
@@ -88,15 +83,6 @@ public class PushActivity extends AppCompatActivity {
         set();
     }
 
-    private void startPush() {
-        boolean startpush = WeimiPush.connect(
-                PushActivity.this.getApplicationContext(), WeimiPush.pushServerIp, true);
-        if (startpush) {
-            Toast.makeText(PushActivity.this, getResources().getString(R.string.push_start_success), Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(PushActivity.this, getResources().getString(R.string.push_start_faild), Toast.LENGTH_SHORT).show();
-        }
-    }
 
     private void set() {
         String start = editStart.getText().toString().trim();
@@ -111,13 +97,6 @@ public class PushActivity extends AppCompatActivity {
             return;
         }
         WeimiInstance.getInstance().shortPushCreate(start, end, new HttpCallback() {
-
-            @Override
-            public void onResponseHistory(
-                    List<HistoryMessage> historyMessage) {
-                // TODO Auto-generated method stub
-
-            }
 
             @Override
             public void onResponse(String result) {
@@ -145,6 +124,11 @@ public class PushActivity extends AppCompatActivity {
             }
 
             @Override
+            public void onResponseHistory(List list) {
+
+            }
+
+            @Override
             public void onError(Exception e) {
                 Log.v(TAG, "e:" + e.getMessage());
                 Message message = handler.obtainMessage();
@@ -160,7 +144,7 @@ public class PushActivity extends AppCompatActivity {
         WeimiInstance.getInstance().shortPushShowUser(new HttpCallback() {
 
             @Override
-            public void onResponseHistory(List<HistoryMessage> arg0) {
+            public void onResponseHistory(List arg0) {
                 // TODO Auto-generated method stub
 
             }
