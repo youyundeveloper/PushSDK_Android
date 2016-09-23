@@ -3,7 +3,7 @@
 
     <!-- 填小米开放平台申请的appId和appKey -->
     <string name="MiPushAppId">2882303761517488598</string>
-    <string name="MiPushAppKey">5951748817598</string>
+    <string name="MiPushAppKey">5801748896598</string>
 
     <string name="login_success">Login Success</string>
     <string name="nouid">Not to get UID</string>
