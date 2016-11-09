@@ -8,7 +8,7 @@
 
 ### 2、下载 SDK
 
-您可以到 [游云Github平台](https://github.com/youyundeveloper/PushSDK_Android/tree/youyun_mi) 下载游云 SDK。下载包中分为如下两部分：
+您可以到 [游云Github平台](https://github.com/youyundeveloper/PushSDK_Android/tree/push) 下载游云 SDK。下载包中分为如下两部分：
 
 - PUSH Lib - 游云 PUSH库和相关库
 - PUSH Demo
@@ -37,15 +37,12 @@
 
 ## 二、集成开发
 
-### 1、将您下载的jar包导入您项目的libs目录，PUSH需要如下jar包
+### 1、将您下载的jar包导入您项目的libs目录，包括PUSH能力基础包两个和http请求包volley，如果您的应用有volley包可不用导入此volley包，如下：
 
 ```
-commons-fileupload-1.2.1.jar
-commons-httpclient-3.1.jar
-commons-lang-2.6.jar
+youyun-push-android-1.1.0.jar
 youyun-protobuf-java-2.4.1.jar
-youyun-push-android-1.0.1.jar
-youyun-wchat-android-1.0.4.jar
+volley.jar
 ```
 #### 注：如小米平台需使用小米PUSH则需加入小米PUSH jar包：
 
@@ -146,7 +143,7 @@ MiPush_SDK_Client_3_0_3.jar
 </receiver>
 ```
 
-### 4、新建class PushMsgReceiver继承ClickReceiver ,在此接收PUSH消息。其中集成游云PUSH接收到PUSH消息后回回调onYouYunReceiveMessage()方法,集成小米PUSH收到PUSH消息则没有回调次方法,当点击通知栏消息时都会回调onNotificationClicked()方法。
+### 4、新建类PushMsgReceiver继承ClickReceiver ,在此接收PUSH消息。其中集成游云PUSH接收到PUSH消息后回回调onYouYunReceiveMessage()方法,集成小米PUSH收到PUSH消息没有回调,当点击通知栏消息时都会回调onNotificationClicked()方法。
 
 ```
 public class PushMsgReceiver extends ClickReceiver {
@@ -190,81 +187,66 @@ public class PushMsgReceiver extends ClickReceiver {
 ### 6、调用SDK接口即可开发
 
 ```
-WeimiInstance.getInstance().xxx();
+YouyunInstance.getInstance().xxx();
 ```
 ## 三、接口文档
 
 ### 1、初始化SDK
 
 ```
-@param context 上下文
-@param udid 设备唯一标识
-@param clientId ClientId
-@param secret 密钥
-@param timeout 超时 单位秒
-@return AuthResultData{boolean success, String userInfo} 
-AuthResultData registerApp(Context context, String udid, String clientId, String secret, int timeout);
+/**
+* @param context 必填
+* @param clientId cliendid 必填
+* @param secret 密钥 必填
+* @param udid 用户唯一标识, udid+clientId+secret生成唯一一个uid 必填
+* @param isOnline true:线上平台 必填
+* @param callback 回调 {"apistatus":1,"result":"12345"} apistatus,1:成功 0:失败 result,成功返回uid,失败返回失败原因
+* @param timeout
+*/
+void initSDK(Context context, String clientId, String secret, String udid, boolean isOnline, YouYunHttpCallback callback, int timeout);
 ```
-### 2、初始化SDK（测试）
-```
-@param context 上下文
-@param udid 设备唯一标识
-@param clientId ClientId
-@param secret 密钥
-@param timeout 超时 单位秒
-@return AuthResultData{boolean success, String userInfo}
-AuthResultData testRegisterApp(Context context, String udid, String clientId, String secret, int timeout);
-```
-### 3、获取用户Id
 
+### 2、启动PUSH服务
 ```
-@return 用户Id
-String getUID();
+/**
+ * @param context 必填
+ * @param isOnline true:线上平台 必填
+ * @param isLogEnable true:显示日志
+ * @return
+ */
+boolean startPush(Context context, boolean isOnline, boolean isLogEnable);
 ```
-### 4、注销
-
+### 3、设置push提醒时段,第一次生成用户时会上报设备信息,所以第一次启动PUSH后必须调用此方法,
 ```
-@return true or false
-boolean logout();
+/**
+ * @param context 必填
+ * @param startTime 开始时间 startTime和endTime不填时会默认为上次设置的时间,上次没有设置则默认0~24
+ * @param endTime 结束时间
+ * @param callback 回调
+ * @param timeout 超时时间
+ * @param tag 用于取消请求
+ */
+void pushCreate(Context context, String startTime, String endTime, YouYunHttpCallback callback, int timeout, Object tag);
 ```
-### 5、启动前台接收PUSH消息
-
+### 4、查询PUSH注册信息
 ```
-@return true or false
-boolean frontReceiveMsg();
+/**
+ * @param context 必填
+ * @param callback
+ * @param timeout
+ * @param tag 用于取消请求
+ */
+void pushShowUsers(Context context, YouYunHttpCallback callback, int timeout, Object tag);
 ```
-### 6、启动PUSH服务
+### 5、注销PUSH信息
 ```
-@param context
-@param pushServerHost WeimiPush.pushServerIp or WeimiPush.testPushServerIp
-@param isLogEnable 是否打开日志
-boolean connect(Context context, String pushServerHost,
-boolean isLogEnable)
-
-启动PUSH接口方法：WeimiPush.connect();
-```
-### 7、注册PUSH信息
-```
-@param startTime 勿扰时段开始时间
-@param endTime 勿扰时段结束时间
-@param httpCallback 回调 {"code":"200"}
-@param timeout 超时 单位秒
-@return boolean
-boolean shortPushCreate(String startTime, String endTime, HttpCallback httpCallback, int timeout);
-```
-### 8、查询PUSH注册信息
-```
-@param httpCallback 回调 {"code":"200","msg":{"device_token":"android-168de9ab8f3a5baf","display":7,"start_time":0,"end_time":24,"data_type":63,"user_id":10001}}
-@param timeout 超时 单位秒
-@return boolean
-boolean shortPushShowUser(HttpCallback httpCallback, int timeout);
-```
-### 9、注销PUSH信息
-```
-@param httpCallback 回调 {"code":"200"}
-@param timeout 超时 单位秒
-@return boolean
-boolean shortPushCancel(HttpCallback httpCallback, int timeout);
+/**
+ * @param context 必填
+ * @param callback
+ * @param timeout
+ * @param tag
+ */
+void pushCancle(Context context, YouYunHttpCallback callback, int timeout, Object tag);
 ```
 ## 四、测试
 
@@ -334,13 +316,16 @@ public class YouYunPush extends PushMessageReceiver {
 
 ```
 /**
- * push消息点击量
- * @param context
- * @param isTest 正式服务器 or 测试服务器
- * @param apiPushId 消息id
+ * @param context 必填
+ * @param apiPushId pushId,收到消息会返回 必填
+ * @param isOnline 必填
  * @param httpCallback
  * @param timeout
- * @return
+ * @param tag
  */
-boolean pushClick(Context context, String apiPushId, boolean isTest, HttpCallback httpCallback, int timeout);
+void pushClick(Context context, String apiPushId, boolean isOnline, YouYunHttpCallback httpCallback, int timeout, Object tag);
 ```
+
+
+
+
