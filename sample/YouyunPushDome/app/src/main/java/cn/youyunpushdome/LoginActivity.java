@@ -51,10 +51,6 @@ public class LoginActivity extends AppCompatActivity {
                      */
                     if (authResultData.success) {
                         /**
-                         * 前台接收PUSH消息
-                         */
-                        WeimiInstance.getInstance().frontReceiveMsg();
-                        /**
                          * 注册push用户信息,startTime和endTime为null时默认为以前设置过的时间,以前没设置过则默认0~24
                          */
                         WeimiInstance.getInstance().shortPushCreate(null, null, null, 60);
