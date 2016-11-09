@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
-import com.ioyouyun.wchat.WeimiInstance;
-import com.ioyouyun.wchat.data.AuthResultData;
-import com.ioyouyun.wchat.message.WChatException;
-import com.weimi.push.WeimiPush;
+import com.weimi.push.YouYunHttpCallback;
+import com.weimi.push.YouyunInstance;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -19,8 +22,11 @@ import yun.mi.push.test.R;
 
 /**
  * Created by 卫彪 on 2016/5/11.
+ * modify on 2016/11/8
  */
 public class LoginActivity extends AppCompatActivity {
+
+    private boolean isOnline = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,54 +35,51 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();
+                initSDK();
             }
         });
     }
 
-    private void login() {
-        new Thread(new Runnable() {
+    private void initSDK(){
+        String udid = generateOpenUDID();
+        String clientIdTest = "1-20142-2e563db99a8ca41df48973b0c43ea50a-andriod";
+        String clientSecretTest = "ace518dab1fde58eacb126df6521d34c";
+
+        // frist step 初始化SDK
+        YouyunInstance.getInstance().initSDK(this, clientIdTest, clientSecretTest, udid, isOnline, new YouYunHttpCallback(){
 
             @Override
-            public void run() {
-                try {
-                    String udid = generateOpenUDID();
-                    String clientIdDefault = "1-20271-4fdc5c9315f5dcfb8645ba5c7c9d3194-andriod";
-                    String clientSecretDefault = "ce13b34d3e68be8f337829b8ed20d712";
-                    AuthResultData authResultData = WeimiInstance.getInstance().registerApp(getApplicationContext(), udid,
-                            clientIdDefault, clientSecretDefault, 60);
-
-                    /**
-                     * 登录成功
-                     */
-                    if (authResultData.success) {
-                        /**
-                         * 前台接收PUSH消息
-                         */
-                        WeimiInstance.getInstance().frontReceiveMsg();
-                        /**
-                         * 注册push用户信息,startTime和endTime为null时默认为以前设置过的时间,以前没设置过则默认0~24
-                         */
-                        WeimiInstance.getInstance().shortPushCreate(null, null, null, 60);
-                        /**
-                         * 启动PUSH服务
-                         */
-                        WeimiPush.connect(LoginActivity.this, WeimiPush.pushServerIp, true);
-
-                        // TODO
-                        Intent intent = new Intent(LoginActivity.this, PushActivity.class);
-                        startActivity(intent);
-                        finish();
+            public void onResponse(String s) {
+                Log.d("Bill", "response:" + s);
+                if(!TextUtils.isEmpty(s)){
+                    try {
+                        JSONObject object = new JSONObject(s);
+                        int status = object.getInt("apistatus");
+                        String result = object.getString("result");
+                        if(1 == status){
+                            // second step 启动PUSH
+                            boolean startResult = YouyunInstance.getInstance().startPush(LoginActivity.this, isOnline, true);
+                            if(startResult){
+                                Intent intent = new Intent(LoginActivity.this, PushActivity.class);
+                                intent.putExtra("uid", result);
+                                startActivity(intent);
+                                finish();
+                            }
+                        } else {
+                            Log.d("Bill", "result:" + result);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
 
-                } catch (WChatException e) {
-                    e.printStackTrace();
                 }
-
             }
 
-        }).start();
-
+            @Override
+            public void onError(Exception e) {
+                Log.d("Bill", "error:" + e.getMessage());
+            }
+        }, 60);
     }
 
     /**

@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.weimi.push.WeimiPush;
+import com.weimi.push.YouyunInstance;
 
 /**
  * Created by 卫彪 on 2016/5/13.
@@ -12,7 +12,8 @@ import com.weimi.push.WeimiPush;
 public class BootBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        WeimiPush.connect(context, WeimiPush.pushServerIp, false);
+        YouyunInstance.getInstance().startPush(context, false, true);
+
 
     }
 }

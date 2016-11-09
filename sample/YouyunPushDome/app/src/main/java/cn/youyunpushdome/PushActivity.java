@@ -13,20 +13,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.ioyouyun.wchat.WeimiInstance;
-import com.ioyouyun.wchat.message.HistoryMessage;
-import com.ioyouyun.wchat.util.HttpCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.List;
+import com.weimi.push.YouYunHttpCallback;
+import com.weimi.push.YouyunInstance;
 
 import yun.mi.push.test.R;
 
 
 /**
  * Created by 卫彪 on 2016/5/11.
+ * modify on 2016/11/8
  */
 public class PushActivity extends AppCompatActivity {
 
@@ -43,7 +38,7 @@ public class PushActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push);
-        uid = WeimiInstance.getInstance().getUID();
+        uid = getIntent().getStringExtra("uid");
         PushUtil.context = getApplicationContext();
         editStart = (EditText) findViewById(R.id.edit_start);
         editEnd = (EditText) findViewById(R.id.edit_end);
@@ -69,6 +64,12 @@ public class PushActivity extends AppCompatActivity {
             }
         }
     };
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        YouyunInstance.getInstance().cancleRequest(this);
+    }
 
     public void handleExit(View v) {
         System.exit(0);
@@ -96,85 +97,38 @@ public class PushActivity extends AppCompatActivity {
             Toast.makeText(PushActivity.this, getResources().getString(R.string.timeprompt), Toast.LENGTH_SHORT).show();
             return;
         }
-        WeimiInstance.getInstance().shortPushCreate(start, end, new HttpCallback() {
-
+        // third step 首次创建用户，必须调用次方法
+        YouyunInstance.getInstance().pushCreate(this, start, end, new YouYunHttpCallback() {
             @Override
-            public void onResponse(String result) {
-                if (result != null) {
-                    JSONObject jsonObject;
-                    try {
-                        jsonObject = new JSONObject(result);
-                        String code = jsonObject.optString("code", null);
-                        if (code != null && code.equals("200")) {
-                            Log.v(TAG, "result:" + result);
-                            Message message = handler.obtainMessage();
-                            message.what = 2;
-                            message.obj = "set success";
-                            handler.sendMessage(message);
-                        }
-                    } catch (JSONException e) {
-                        Message message = handler.obtainMessage();
-                        message.what = 2;
-                        message.obj = "error";
-                        handler.sendMessage(message);
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onResponseHistory(List list) {
-
+            public void onResponse(String s) {
+                Log.v(TAG, "result:" + s);
+                Message message = handler.obtainMessage();
+                message.what = 2;
+                message.obj = s;
+                handler.sendMessage(message);
             }
 
             @Override
             public void onError(Exception e) {
-                Log.v(TAG, "e:" + e.getMessage());
                 Message message = handler.obtainMessage();
                 message.what = 2;
                 message.obj = "error";
                 handler.sendMessage(message);
+                e.printStackTrace();
             }
+        }, 60, "create_push");
 
-        }, 60);
     }
 
     private void getInfo() {
-        WeimiInstance.getInstance().shortPushShowUser(new HttpCallback() {
-
+        YouyunInstance.getInstance().pushShowUsers(this, new YouYunHttpCallback() {
             @Override
-            public void onResponseHistory(List arg0) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onResponse(String result) {
-                if (result != null) {
-                    JSONObject jsonObject;
-                    try {
-                        jsonObject = new JSONObject(result);
-                        String code = jsonObject.optString("code", null);
-                        if (code != null && code.equals("200")) {
-                            String msg = jsonObject.optJSONObject("msg").toString();
-                            Log.v(TAG, "msg:" + msg);
-                            if (!TextUtils.isEmpty(msg)) {
-                                Message message = handler.obtainMessage();
-                                message.what = 1;
-                                message.obj = msg;
-                                handler.sendMessage(message);
-                            }
-                        }
-                    } catch (JSONException e) {
-                        Message message = handler.obtainMessage();
-                        message.what = 1;
-                        message.obj = "error";
-                        handler.sendMessage(message);
-                        e.printStackTrace();
-                    }
-                }
-
+            public void onResponse(String s) {
+                Log.v(TAG, "result:" + s);
+                Message message = handler.obtainMessage();
+                message.what = 1;
+                message.obj = s;
+                handler.sendMessage(message);
             }
 
             @Override
@@ -183,11 +137,8 @@ public class PushActivity extends AppCompatActivity {
                 message.what = 1;
                 message.obj = "error";
                 handler.sendMessage(message);
-                Log.v(TAG, "e:" + e.getMessage());
-
             }
-
-        }, 120);
+        }, 60, "get_push");
     }
 
     private Handler handler = new Handler() {

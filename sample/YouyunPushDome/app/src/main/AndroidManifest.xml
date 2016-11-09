@@ -25,14 +25,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="cn.youyunpushdome.MainActivity"></activity>
-        <activity android:name="cn.youyunpushdome.LoginActivity">
+        <activity android:name="cn.youyunpushdome.LoginActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="cn.youyunpushdome.PushActivity"></activity>
+        <activity android:name="cn.youyunpushdome.PushActivity" android:screenOrientation="portrait"></activity>
 
         <receiver
             android:name="cn.youyunpushdome.BootBroadcastReceiver"
@@ -56,7 +56,7 @@
             android:name="com.weimi.push.WeimiPushReceiver"
             android:exported="false">
             <intent-filter>
-                <action android:name="me.weimi.push.action.20271" />
+                <action android:name="me.weimi.push.action.20142" />
                 <!-- me.weimi.push.action.第三方的appId -->
             </intent-filter>
         </receiver>
