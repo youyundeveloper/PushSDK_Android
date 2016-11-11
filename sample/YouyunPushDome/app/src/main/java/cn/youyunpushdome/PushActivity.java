@@ -75,11 +75,55 @@ public class PushActivity extends AppCompatActivity {
         System.exit(0);
     }
 
+    /**
+     * 删除用户
+     * @param v
+     */
+    public void handleRemove(View v) {
+        YouyunInstance.getInstance().pushRemove(this, new YouYunHttpCallback() {
+            @Override
+            public void onResponse(String s) {
+                Log.d(TAG, "handleRemove:" + s);
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        }, 60, "push_remove");
+    }
+
+    /**
+     * 取消用户注册信息
+     * @param v
+     */
+    public void handleCancle(View v) {
+        YouyunInstance.getInstance().pushCancle(this, new YouYunHttpCallback() {
+            @Override
+            public void onResponse(String s) {
+                Log.d(TAG, "pushCancle:" + s);
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        }, 60, "push_cancle");
+    }
+
+    /**
+     * 获取用户注册信息
+     * @param v
+     */
     public void handleGetPushInfo(View v) {
         textGetInfo.setText("");
         getInfo();
     }
 
+    /**
+     * 设置勿扰时段，注册用户信息
+     * @param v
+     */
     public void handleSetPushInfo(View v) {
         set();
     }

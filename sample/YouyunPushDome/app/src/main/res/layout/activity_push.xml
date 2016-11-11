@@ -15,6 +15,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="handleCancle"
+            android:text="取消接收PUSH" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:onClick="handleExit"
             android:text="@string/exit_app" />
     </LinearLayout>
@@ -121,4 +128,19 @@
             android:textOn="@string/sound_open" />
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="handleRemove"
+            android:text="删除用户" />
+
+    </LinearLayout>
+
 </LinearLayout>
