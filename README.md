@@ -231,22 +231,29 @@ void pushCreate(Context context, String startTime, String endTime, YouYunHttpCal
 ### 4、查询PUSH注册信息
 ```
 /**
- * @param context 必填
  * @param callback
  * @param timeout
  * @param tag 用于取消请求
  */
-void pushShowUsers(Context context, YouYunHttpCallback callback, int timeout, Object tag);
+void pushShowUsers(YouYunHttpCallback callback, int timeout, Object tag);
 ```
 ### 5、注销PUSH信息
 ```
 /**
- * @param context 必填
  * @param callback
  * @param timeout
  * @param tag
  */
-void pushCancle(Context context, YouYunHttpCallback callback, int timeout, Object tag);
+void pushCancle(YouYunHttpCallback callback, int timeout, Object tag);
+```
+### 6、删除用户
+```
+/**
+ * @param callback
+ * @param timeout
+ * @param tag
+ */
+void pushRemove(YouYunHttpCallback callback, int timeout, Object tag);
 ```
 ## 四、测试
 
@@ -316,14 +323,13 @@ public class YouYunPush extends PushMessageReceiver {
 
 ```
 /**
- * @param context 必填
  * @param apiPushId pushId,收到消息会返回 必填
  * @param isOnline 必填
  * @param httpCallback
  * @param timeout
  * @param tag
  */
-void pushClick(Context context, String apiPushId, boolean isOnline, YouYunHttpCallback httpCallback, int timeout, Object tag);
+void pushClick(String apiPushId, boolean isOnline, YouYunHttpCallback httpCallback, int timeout, Object tag);
 ```
 
 

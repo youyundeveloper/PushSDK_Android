@@ -19,6 +19,7 @@ public class PushMsgReceiver extends ClickReceiver {
     @Override
     protected void onYouYunReceiveMessage(Context context, PayLoadMessage payLoadMessage) {
         super.onYouYunReceiveMessage(context, payLoadMessage);
+        PushUtil.context = context;
         if (payLoadMessage.sound != null) {
             if (SharedPreferenceUtil.getInstance().getVibration()) {
                 SoundVibrateUtil.checkIntervalTimeAndVibrate(context);

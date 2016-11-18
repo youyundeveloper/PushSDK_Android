@@ -80,7 +80,7 @@ public class PushActivity extends AppCompatActivity {
      * @param v
      */
     public void handleRemove(View v) {
-        YouyunInstance.getInstance().pushRemove(this, new YouYunHttpCallback() {
+        YouyunInstance.getInstance().pushRemove(new YouYunHttpCallback() {
             @Override
             public void onResponse(String s) {
                 Log.d(TAG, "handleRemove:" + s);
@@ -98,7 +98,7 @@ public class PushActivity extends AppCompatActivity {
      * @param v
      */
     public void handleCancle(View v) {
-        YouyunInstance.getInstance().pushCancle(this, new YouYunHttpCallback() {
+        YouyunInstance.getInstance().pushCancle(new YouYunHttpCallback() {
             @Override
             public void onResponse(String s) {
                 Log.d(TAG, "pushCancle:" + s);
@@ -165,7 +165,7 @@ public class PushActivity extends AppCompatActivity {
     }
 
     private void getInfo() {
-        YouyunInstance.getInstance().pushShowUsers(this, new YouYunHttpCallback() {
+        YouyunInstance.getInstance().pushShowUsers(new YouYunHttpCallback() {
             @Override
             public void onResponse(String s) {
                 Log.v(TAG, "result:" + s);
