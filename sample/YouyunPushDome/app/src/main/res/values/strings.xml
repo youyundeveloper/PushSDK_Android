@@ -21,4 +21,7 @@
     <string name="timeprompt">startTime and endTime is Integer between 0-24</string>
     <string name="exit_app">Exit App</string>
     <string name="enter_app">Enter App</string>
+
+    <!-- 消息成功率统计： 通道将消息转发给SDK后，SDK通知通道消息已接收到 -->
+    <string name="hwpush_ability_value" translatable="false">successRateAnalytics</string>
 </resources>

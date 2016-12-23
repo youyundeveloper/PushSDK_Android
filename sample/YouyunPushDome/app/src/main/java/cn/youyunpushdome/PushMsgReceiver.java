@@ -1,9 +1,14 @@
 package cn.youyunpushdome;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.weimi.push.ClickReceiver;
 import com.weimi.push.data.PayLoadMessage;
+import com.weimi.push.util.Log;
+import com.xiaomi.mipush.sdk.MiPushMessage;
+
+import java.util.Map;
 
 /**
  * Created by 卫彪 on 2016/9/23.
@@ -39,5 +44,21 @@ public class PushMsgReceiver extends ClickReceiver {
     @Override
     protected void onNotificationClicked(Context context, Object message) {
         super.onNotificationClicked(context, message);
+        if (message instanceof PayLoadMessage) {
+            PayLoadMessage payLoadMessage = (PayLoadMessage) message;
+            Log.d("click:" + payLoadMessage.toString());
+            Map map = payLoadMessage.customDictionary;
+            toIntent(context, map);
+        } else if (message instanceof MiPushMessage) {
+            MiPushMessage miPushMessage = (MiPushMessage) message;
+            Log.d("mi click:" + miPushMessage.toString());
+            Map<String, String> map = miPushMessage.getExtra();
+            toIntent(context, map);
+        }
     }
+
+    private void toIntent(Context context, Map<String, String> map) {
+        Toast.makeText(context, "扩展信息：" + map.toString(), Toast.LENGTH_LONG).show();
+    }
+
 }

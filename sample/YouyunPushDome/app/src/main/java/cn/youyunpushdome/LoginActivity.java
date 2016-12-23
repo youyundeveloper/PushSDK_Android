@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.RadioGroup;
 
 import com.weimi.push.YouYunHttpCallback;
 import com.weimi.push.YouyunInstance;
@@ -18,7 +19,6 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 
 import yun.mi.push.test.R;
-
 
 /**
  * Created by 卫彪 on 2016/5/11.
@@ -38,28 +38,47 @@ public class LoginActivity extends AppCompatActivity {
                 initSDK();
             }
         });
+
+        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.rg_platform);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rb_online) {
+                    isOnline = true;
+                } else if (checkedId == R.id.rb_test) {
+                    isOnline = false;
+                }
+            }
+        });
     }
 
-    private void initSDK(){
+    private void initSDK() {
         String udid = generateOpenUDID();
-        String clientIdTest = "1-20142-2e563db99a8ca41df48973b0c43ea50a-andriod";
-        String clientSecretTest = "ace518dab1fde58eacb126df6521d34c";
+        String clientId;
+        String clientSecret;
 
-        // frist step 初始化SDK
-        YouyunInstance.getInstance().initSDK(this, clientIdTest, clientSecretTest, udid, isOnline, new YouYunHttpCallback(){
+        if (isOnline) {
+            clientId = "1-20525-4ab3a7c3ddb665945d0074f51e979ef0-andriod";
+            clientSecret = "6f3efde9fb49a76ff6bfb257f74f4d5b";
+        } else {
+            clientId = "1-20142-2e563db99a8ca41df48973b0c43ea50a-andriod";
+            clientSecret = "ace518dab1fde58eacb126df6521d34c";
+        }
+            // frist step 初始化SDK
+        YouyunInstance.getInstance().initSDK(LoginActivity.this.getApplicationContext(), clientId, clientSecret, udid, isOnline, new YouYunHttpCallback() {
 
             @Override
             public void onResponse(String s) {
                 Log.d("Bill", "response:" + s);
-                if(!TextUtils.isEmpty(s)){
+                if (!TextUtils.isEmpty(s)) {
                     try {
                         JSONObject object = new JSONObject(s);
                         int status = object.getInt("apistatus");
                         String result = object.getString("result");
-                        if(1 == status){
+                        if (1 == status) {
                             // second step 启动PUSH
                             boolean startResult = YouyunInstance.getInstance().startPush(LoginActivity.this, isOnline, true);
-                            if(startResult){
+                            if (startResult) {
                                 Intent intent = new Intent(LoginActivity.this, PushActivity.class);
                                 intent.putExtra("uid", result);
                                 startActivity(intent);
@@ -80,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d("Bill", "error:" + e.getMessage());
             }
         }, 60);
+
     }
 
     /**
