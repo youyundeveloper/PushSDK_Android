@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
             clientId = "1-20142-2e563db99a8ca41df48973b0c43ea50a-andriod";
             clientSecret = "ace518dab1fde58eacb126df6521d34c";
         }
-            // frist step 初始化SDK
+        // frist step 初始化SDK
         YouyunInstance.getInstance().initSDK(LoginActivity.this.getApplicationContext(), clientId, clientSecret, udid, isOnline, new YouYunHttpCallback() {
 
             @Override
@@ -79,6 +79,9 @@ public class LoginActivity extends AppCompatActivity {
                             // second step 启动PUSH
                             boolean startResult = YouyunInstance.getInstance().startPush(LoginActivity.this, isOnline, true);
                             if (startResult) {
+                                // third step 注册用户信息,首次创建用户，必须调用次方法
+                                YouyunInstance.getInstance().registerEquipment(LoginActivity.this, null, 120, "register");
+
                                 Intent intent = new Intent(LoginActivity.this, PushActivity.class);
                                 intent.putExtra("uid", result);
                                 startActivity(intent);

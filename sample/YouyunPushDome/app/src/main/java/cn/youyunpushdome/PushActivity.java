@@ -76,24 +76,6 @@ public class PushActivity extends AppCompatActivity {
     }
 
     /**
-     * 删除用户
-     * @param v
-     */
-    public void handleRemove(View v) {
-        YouyunInstance.getInstance().pushRemove(new YouYunHttpCallback() {
-            @Override
-            public void onResponse(String s) {
-                Log.d(TAG, "handleRemove:" + s);
-            }
-
-            @Override
-            public void onError(Exception e) {
-
-            }
-        }, 60, "push_remove");
-    }
-
-    /**
      * 取消用户注册信息
      * @param v
      */
@@ -121,7 +103,7 @@ public class PushActivity extends AppCompatActivity {
     }
 
     /**
-     * 设置勿扰时段，注册用户信息
+     * 设置勿扰时段
      * @param v
      */
     public void handleSetPushInfo(View v) {
@@ -141,7 +123,7 @@ public class PushActivity extends AppCompatActivity {
             Toast.makeText(PushActivity.this, getResources().getString(R.string.timeprompt), Toast.LENGTH_SHORT).show();
             return;
         }
-        // third step 首次创建用户，必须调用次方法
+
         YouyunInstance.getInstance().pushCreate(this, start, end, new YouYunHttpCallback() {
             @Override
             public void onResponse(String s) {

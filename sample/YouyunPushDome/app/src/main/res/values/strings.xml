@@ -16,6 +16,7 @@
     <string name="setpushprompt">设置提醒时段</string>
     <string name="getpushprompt">获取提醒时段</string>
     <string name="pushprompt">设置提醒时段(0-24的整数)</string>
+    <string name="unregister">取消注册PUSH</string>
     <string name="start_time">startTime</string>
     <string name="end_time">endTime</string>
     <string name="timeprompt">startTime and endTime is Integer between 0-24</string>
