@@ -32,7 +32,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="cn.youyunpushdome.PushActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="cn.youyunpushdome.PushActivity" android:screenOrientation="portrait">
+        </activity>
 
         <receiver
             android:name="cn.youyunpushdome.BootBroadcastReceiver"
@@ -44,6 +45,7 @@
             </intent-filter>
         </receiver>
 
+        <!-- youyun push -->
         <service
             android:name="com.weimi.push.service.WeimiPushService"
             android:exported="true"
@@ -93,7 +95,6 @@
                 <action android:name="com.xiaomi.mipush.ERROR" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
             android:exported="true">
@@ -133,7 +134,6 @@
 
         <!-- 备注：Push相关的android组件需要添加到业务的AndroidManifest.xml,
         	 Push相关android组件运行在另外一个进程是为了防止Push服务异常而影响主业务 -->
-
         <!-- PushSDK:PushSDK接收外部请求事件入口 -->
         <receiver
             android:name="com.huawei.android.pushagent.PushEventReceiver"
@@ -162,19 +162,11 @@
                 android:name="CS_cloud_version"
                 android:value="\u0032\u0037\u0030\u0035" />
         </receiver>
-
         <!-- PushSDK:Push服务 -->
         <service
             android:name="com.huawei.android.pushagent.PushService"
-            android:process=":pushservice"></service>
-
-        <activity
-            android:name="com.huawei.android.pushselfshow.permission.RequestPermissionsActivity"
-            android:configChanges="orientation|screenSize|locale|layoutDirection"
-            android:exported="false"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog.NoActionBar"></activity>
+            android:process=":pushservice">
+        </service>
 
         <receiver android:name="cn.youyunpushdome.PushMsgReceiver">
             <intent-filter>
