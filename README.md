@@ -1,4 +1,4 @@
-# **Youyun Android PUSH_SDK 集成**
+﻿# **Youyun Android PUSH_SDK 集成**
 
 ## 一、前期准备
 在您阅读此文档之前，我们假定您已具备基础的 Android 应用开发经验，并能够理解相关基础概念。
@@ -21,10 +21,10 @@
 
 您创建完应用后，首先需要了解的是 App ClientID / Secret，它们是游云 SDK 连接服务器所必须的标识，每一个 App 对应一套 App ClientID / Secret。
 
-### 4、如小米平台需使用小米PUSH则需要此步骤：
-##### 1、注册小米开发者帐号
+### 注：如小米平台需使用小米PUSH则需要此步骤：
+##### (1)、注册小米开发者帐号
 开发者在集成小米PUSH功能前，需前往[小米开放平台](http://dev.xiaomi.com/)注册创建小米开发者帐号。 
-##### 2、创建应用并在游云平台配置
+##### (2)、创建应用并在游云平台配置
 在小米开发者平台创建应用并启用,将得到小米AppID、AppKey、AppSecret，在游云放平台的[推送管理](http://17youyun.com/web/push/pushAdvanceConfig)中进行配置。并在应用的res/values/string里面添加AppId和AppKey
 
 ```
@@ -34,13 +34,18 @@
 
 具体参见 [小米开发者文档](http://dev.xiaomi.com/doc/?p=1621/)
 
+### 注2：如华为平台需使用华为PUSH则需要此步骤：
+##### (1)、注册华为帐号
+开发者在集成华为PUSH功能前，需前往[华为开发者联盟](http://developer.huawei.com/consumer/cn)注册华为帐号。
+##### (2)、创建应用
+在华为[应用管理](http://developer.huawei.com/consumer/cn/devunion/openPlatform/html/memberCenter.html#appManage#)中创建应用
 
 ## 二、集成开发
 
 ### 1、将您下载的jar包导入您项目的libs目录，包括PUSH能力基础包两个和http请求包volley，如果您的应用有volley包可不用导入此volley包，如下：
 
 ```
-youyun-push-android-1.1.0.jar
+youyun-push-android-1.1.1.jar
 youyun-protobuf-java-2.4.1.jar
 volley.jar
 ```
@@ -48,6 +53,11 @@ volley.jar
 
 ```
 MiPush_SDK_Client_3_0_3.jar
+```
+#### 注2：如华为手机需使用华为PUSH则需加入华为PUSH jar包：
+
+```
+HwPush_SDK_V2705.jar
 ```
 
 ### 2、在您项目的AndroidManifest.xml文件中加入以下权限
@@ -143,7 +153,59 @@ MiPush_SDK_Client_3_0_3.jar
 </receiver>
 ```
 
-### 4、新建类PushMsgReceiver继承ClickReceiver ,在此接收PUSH消息。其中集成游云PUSH接收到PUSH消息后回回调onYouYunReceiveMessage()方法,集成小米PUSH收到PUSH消息没有回调,当点击通知栏消息时都会回调onNotificationClicked()方法。
+#### 注2：如华为平台需使用华为PUSH则需额外加入如下服务和广播：
+```
+<receiver android:name="com.weimi.push.HuaweiPushMsgReceiver">
+      <intent-filter>
+           <!-- 必须,用于接收token-->
+           <action android:name="com.huawei.android.push.intent.REGISTRATION" />
+           <!-- 必须，用于接收消息-->
+           <action android:name="com.huawei.android.push.intent.RECEIVE" />
+           <!-- 可选，用于点击通知栏或通知栏上的按钮后触发onEvent回调-->
+           <action android:name="com.huawei.android.push.intent.CLICK" />
+           <!-- 可选，查看push通道是否连接，不查看则不需要-->
+           <action android:name="com.huawei.intent.action.PUSH_STATE" />
+           <!-- 可选，标签、地理位置上报回应，不上报则不需要 -->
+           <action android:name="com.huawei.android.push.plugin.RESPONSE" />
+       </intent-filter>
+       <meta-data
+            android:name="CS_cloud_ablitity"
+            android:value="@string/hwpush_ability_value" />
+</receiver>
+<receiver android:name="com.huawei.android.pushagent.PushEventReceiver"
+          android:process=":pushservice">
+      <intent-filter>
+           <action android:name="com.huawei.android.push.intent.REFRESH_PUSH_CHANNEL" />
+           <action android:name="com.huawei.intent.action.PUSH" />
+           <action android:name="com.huawei.intent.action.PUSH_ON" />
+           <action android:name="com.huawei.android.push.PLUGIN" />
+      </intent-filter>
+      <intent-filter>
+           <action android:name="android.intent.action.PACKAGE_ADDED" />
+           <action android:name="android.intent.action.PACKAGE_REMOVED" />
+           <data android:scheme="package" />
+      </intent-filter>
+</receiver>
+<receiver android:name="com.huawei.android.pushagent.PushBootReceiver"
+          android:process=":pushservice">
+      <intent-filter>
+           <action android:name="com.huawei.android.push.intent.REGISTER" />
+           <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+      </intent-filter>
+      <meta-data
+           android:name="CS_cloud_version"
+           android:value="\u0032\u0037\u0030\u0035" />
+</receiver>
+<service android:name="com.huawei.android.pushagent.PushService"
+         android:process=":pushservice">
+</service>
+```
+在strings.xml中加入如下string
+```
+<string name="hwpush_ability_value" translatable="false">successRateAnalytics</string>
+```
+
+### 4、新建类PushMsgReceiver继承ClickReceiver ,在此接收PUSH消息。其中集成游云PUSH接收到PUSH消息后回回调onYouYunReceiveMessage()方法,集成小米和华为PUSH收到PUSH消息没有消息回调,当点击通知栏消息时都会回调onNotificationClicked()方法。
 
 ```
 public class PushMsgReceiver extends ClickReceiver {
@@ -166,7 +228,7 @@ public class PushMsgReceiver extends ClickReceiver {
     @Override
     protected void onNotificationClicked(Context context, Object message) {
         if(message instanceof PayLoadMessage) {
-            Log.d("Youyun Click");
+            Log.d("Youyun Click Or Huawei Click");
         } else if(message instanceof MiPushMessage) {
             Log.d("Xiaomi Click");
         }
@@ -216,7 +278,19 @@ void initSDK(Context context, String clientId, String secret, String udid, boole
  */
 boolean startPush(Context context, boolean isOnline, boolean isLogEnable);
 ```
-### 3、设置push提醒时段,第一次生成用户时会上报设备信息,所以第一次启动PUSH后必须调用此方法,
+### 3、注册设备信息,第一次生成用户时会上报设备信息,所以第一次启动PUSH后必须调用此方法,以后随意
+```
+/**
+ * @param context 必填
+ * @param callback 回调
+ * @param timeout 超时时间
+ * @param tag 用于取消请求
+ */
+void registerEquipment(Context context, YouYunHttpCallback callback, int timeout, Object tag);
+```
+
+
+### 4、设置push提醒时段
 ```
 /**
  * @param context 必填
@@ -228,33 +302,27 @@ boolean startPush(Context context, boolean isOnline, boolean isLogEnable);
  */
 void pushCreate(Context context, String startTime, String endTime, YouYunHttpCallback callback, int timeout, Object tag);
 ```
-### 4、查询PUSH注册信息
+### 5、查询PUSH注册信息
 ```
 /**
+ * @param context 必填
  * @param callback
  * @param timeout
  * @param tag 用于取消请求
  */
-void pushShowUsers(YouYunHttpCallback callback, int timeout, Object tag);
+void pushShowUsers(Context context, YouYunHttpCallback callback, int timeout, Object tag);
 ```
-### 5、注销PUSH信息
+### 6、注销PUSH信息
 ```
 /**
+ * @param context 必填
  * @param callback
  * @param timeout
  * @param tag
  */
 void pushCancle(YouYunHttpCallback callback, int timeout, Object tag);
 ```
-### 6、删除用户
-```
-/**
- * @param callback
- * @param timeout
- * @param tag
- */
-void pushRemove(YouYunHttpCallback callback, int timeout, Object tag);
-```
+
 ## 四、测试
 
 #### 在游云开发平台的 [推送管理](http://17youyun.com/web/push/pushManage) 中进行测试
@@ -323,13 +391,14 @@ public class YouYunPush extends PushMessageReceiver {
 
 ```
 /**
+ * @param context 必填
  * @param apiPushId pushId,收到消息会返回 必填
  * @param isOnline 必填
  * @param httpCallback
  * @param timeout
  * @param tag
  */
-void pushClick(String apiPushId, boolean isOnline, YouYunHttpCallback httpCallback, int timeout, Object tag);
+void pushClick(Context context, String apiPushId, boolean isOnline, YouYunHttpCallback httpCallback, int timeout, Object tag);
 ```
 
 
