@@ -38,7 +38,9 @@
 ##### (1)、注册华为帐号
 开发者在集成华为PUSH功能前，需前往[华为开发者联盟](http://developer.huawei.com/consumer/cn)注册华为帐号。
 ##### (2)、创建应用
-在华为[应用管理](http://developer.huawei.com/consumer/cn/devunion/openPlatform/html/memberCenter.html#appManage#)中创建应用
+在华为[应用管理](http://developer.huawei.com/consumer/cn/devunion/openPlatform/html/memberCenter.html#appManage#)中创建应用，并配置HMS权益，提交审核。
+
+具体参见[华为开发文档](http://developer.huawei.com/consumer/cn/wiki/index.php?title=HMS%E5%BC%80%E5%8F%91%E6%8C%87%E5%AF%BC%E4%B9%A6-PUSH%E6%9C%8D%E5%8A%A1%E6%8E%A5%E5%8F%A3)
 
 ## 二、集成开发
 
