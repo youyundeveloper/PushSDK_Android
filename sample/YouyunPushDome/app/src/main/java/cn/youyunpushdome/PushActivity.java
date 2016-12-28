@@ -68,6 +68,9 @@ public class PushActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+
+        // 调用此方法后，PushActivity所持有的短连请求会中断，也可以根据之前短连中设置的tag来中断某一个短连请求
+        // 注：此方法最终调用volley中的中断短连的方法
         YouyunInstance.getInstance().cancleRequest(this);
     }
 

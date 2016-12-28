@@ -325,6 +325,14 @@ void pushShowUsers(Context context, YouYunHttpCallback callback, int timeout, Ob
 void pushCancle(YouYunHttpCallback callback, int timeout, Object tag);
 ```
 
+### 7、取消短连请求
+```
+/**
+ * @param tag
+ */
+void cancleRequest(Object tag);
+```
+
 ## 四、测试
 
 #### 在游云开发平台的 [推送管理](http://17youyun.com/web/push/pushManage) 中进行测试
