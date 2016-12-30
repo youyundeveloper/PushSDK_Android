@@ -1,6 +1,8 @@
 package cn.youyunpushdome;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
 import com.weimi.push.ClickReceiver;
@@ -10,10 +12,17 @@ import com.xiaomi.mipush.sdk.MiPushMessage;
 
 import java.util.Map;
 
+import yun.mi.push.test.R;
+
 /**
  * Created by 卫彪 on 2016/9/23.
  */
 public class PushMsgReceiver extends ClickReceiver {
+
+    @Override
+    public NotificationCompat.Builder setBuilder(NotificationCompat.Builder builder) {
+        return builder.setSmallIcon(R.drawable.notification_sensitive_small_icon).setColor(Color.parseColor("#ff0000"));
+    }
 
     /**
      * 集成游云PUSH的接收消息会回调
